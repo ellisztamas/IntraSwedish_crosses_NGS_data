@@ -159,6 +159,7 @@ f8_lowcov <- f8_lowcov %>%
 
 # Write to disk
 f8_lowcov %>%
+  arrange(sample_alias) %>% 
   write_tsv(
     "02_input_sample_sheets/F8_lowcov_input_sheet.tsv"
   )
