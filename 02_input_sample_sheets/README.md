@@ -15,10 +15,10 @@ The information in these files contain information to
 
 Key columns in each file:
 
-* `fastq1` and `fastq2` are paths to fastq files with raw names from the NGS facility.
+* `source_fastq_R1` and `source_fastq_R2` are paths to fastq files with raw names from the NGS facility.
 * `basename` gives the (most of) the target file name for each fastq file.
     * This will be appended with `_R1.fastq.gz` and `_R2,fastq.gz`.
-* `file_name1` and `file_name2` are file names for each fastq file, after renaming.
+* `target_fastq_R1` and `target_fastq_R2` are file names for each fastq file, after renaming.
     * This is used to create the checksums and Reads sample sheets.
     * This is obviously redundant with `basename`.
 * Columns needed to create the **Samples** submission sheets:
@@ -30,6 +30,10 @@ Key columns in each file:
         * For crossed lines, this is the line ID, starting with `ISC`
     * `collection date`: Date on which tissue was collected. In practice this is often date the library was submitted, because I don't have information on collection date.
 * Columns needed to create the **Reads** submission sheets:
-    * TBC once I go through the reads submission script.
+    * `study`: ENA study name. `PRJEB123735` in all cases.
+    * `sample_alias`: see above.
+    * `instrument model`: the sequencing machine. In this dataset this is `Illumina NovaSeq X` in all cases.
+    * `target_fastq_R1`: see above.
+    * `target_fastq_R2`: see above.
 
 The other columns are not essential, and are mostly there to set up the sheet.
