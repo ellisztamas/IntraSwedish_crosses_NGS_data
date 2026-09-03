@@ -72,6 +72,17 @@ f8_lowcov <- f8_lowcov %>%
     sample_alias = paste(line, "F8lowcov", sep="_")
   )
 
+# Lines ISC_050.1, ISC_021.1 and ISC_382.1 have duplicate sample_alias entries
+# For ISC_021.1 and ISC_382.1 one of the two libraries failed, so these are removed later
+# For ISC_050.1 use the sample from 5H3 has much better coverage than the one from 2F6
+# Also 2F6 probably does not match the sample.
+f8_lowcov <- f8_lowcov %>% 
+  filter(library_name != "2F6")
+# Code to check duplicates, for troubleshooting later: 
+# f8_lowcov %>% 
+#   filter(
+#     sample_alias %in% names(which(table(f8_lowcov$sample_alias) != 1))
+#   )
 
 # Create a variable giving the first part of the expected file name for each R1 file.
 f8_lowcov <- rbind(
