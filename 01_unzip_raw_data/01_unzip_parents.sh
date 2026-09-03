@@ -10,7 +10,7 @@
 #SBATCH --output=%x.out
 #SBATCH --error=%x.err
 #SBATCH --qos=short
-#SBATCH --time=4:00:00
+#SBATCH --time=2:00:00
 
 # Set working directory
 source setup.sh
