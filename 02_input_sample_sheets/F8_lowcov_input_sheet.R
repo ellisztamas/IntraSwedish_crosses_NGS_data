@@ -1,21 +1,21 @@
 #' Script to create an input sample sheet for F8 low coverage sequencing batch.
-#' 
+#'
 #' This is a complciated example, because data were sequenced across five plates,
 #' but plates 1-4 were run on two flow cells, so there are two pairs of files
 #' in different directories for each sample, which breaks my usual workflow for
 #' sorting raw files.
-#' 
+#'
 #' Instead, this script creates a character variable that concatenates the
-#' expected path to each sample's raw R1 data file(s) and the first part of each 
+#' expected path to each sample's raw R1 data file(s) and the first part of each
 #' file name (the NGS request ID and two indices) then greps those partial paths
-#' in a list of actual unzipped filenames. 
+#' in a list of actual unzipped filenames.
 #' It identifies R2 files by string substitution.
 #' It then confirms that these files exist, and that there are no duplicates.
-#' 
+#'
 #' Tom Ellis
 #' 2026-08-14
-  
-  
+
+
 library(tidyverse)
 # Import a lab sample sheet giving well positions, legacy line names, and
 # sequencing indices.
@@ -48,6 +48,8 @@ f8_lowcov <- f8_lowcov %>%
 # Fill in columns
 f8_lowcov <- f8_lowcov %>%
   mutate(
+    study = "PRJEB123735",
+    instrument_model = "Illumina NovaSeq X",
     library_name = paste0(plate, row, col),
     flowcell = case_when(
       plate %in% 1:4 ~ 'H32TKDSX5',
@@ -76,10 +78,10 @@ f8_lowcov <- f8_lowcov %>%
 # For ISC_021.1 and ISC_382.1 one of the two libraries failed, so these are removed later
 # For ISC_050.1 use the sample from 5H3 has much better coverage than the one from 2F6
 # Also 2F6 probably does not match the sample.
-f8_lowcov <- f8_lowcov %>% 
+f8_lowcov <- f8_lowcov %>%
   filter(library_name != "2F6")
-# Code to check duplicates, for troubleshooting later: 
-# f8_lowcov %>% 
+# Code to check duplicates, for troubleshooting later:
+# f8_lowcov %>%
 #   filter(
 #     sample_alias %in% names(which(table(f8_lowcov$sample_alias) != 1))
 #   )
@@ -152,25 +154,27 @@ all(file.exists(f8_lowcov$source_fastq_R2))
 f8_lowcov <- f8_lowcov %>%
   mutate(
     basename   = paste0(sample_alias, "_", library_name,"_",run),
-    target_fastq_R1 = paste0("03_rename_fastq_files/F8_low_cov/", basename,"_R1.fastq.gz"),
-    target_fastq_R2 = paste0("03_rename_fastq_files/F8_low_cov/", basename,"_R2.fastq.gz")
+    forward_file_name = paste0("03_rename_fastq_files/F8_low_cov/", basename,"_R1.fastq.gz"),
+    reverse_file_name = paste0("03_rename_fastq_files/F8_low_cov/", basename,"_R2.fastq.gz")
   ) %>%
   select(
+    study,
     line,
     legacy_line_name,
     sample_alias,
     library_name,
     collection_date,
+    instrument_model,
     source_fastq_R1,
     source_fastq_R2,
-    target_fastq_R1,
-    target_fastq_R2,
+    forward_file_name,
+    reverse_file_name,
   )
 
 
 # Write to disk
 f8_lowcov %>%
-  arrange(sample_alias) %>% 
+  arrange(sample_alias) %>%
   write_tsv(
     "02_input_sample_sheets/F8_lowcov_input_sheet.tsv"
   )

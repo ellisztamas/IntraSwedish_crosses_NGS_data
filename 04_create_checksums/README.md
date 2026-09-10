@@ -4,7 +4,7 @@ This directory contains two scripts to generate MD5 hashes for each fastq file.
 This is needed as part of the ENA 'Reads' submission sheet.
 
 This works on one input sample sheet at a time, and extracts paths to fastq
-files given in the columns `target_fastq_R1` and `target_fastq_R2`.
+files given in the columns `forward_file_name` and `reverse_file_name`.
 It then spawns a job to run `md5sum` on each of those files in parallel.
 
 However, `md5sum` is really slow to run in series over many files.

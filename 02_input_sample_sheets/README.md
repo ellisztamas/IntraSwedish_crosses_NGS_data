@@ -15,6 +15,7 @@ The information in these files contain information to
 
 Key columns in each file:
 
+* `study`: Project ID on ENA. `PRJEB123735` in all cases.
 * `line`: Line name.
 * `legacy_line_name`: While developing the crosses, lines were assigned a name based on the parents of the cross. In fact, genotyping them revealed that some of the expected parents were wrong or ambigous, so I switched to the ISC names. I include the legacy names here for completeness, but you should in general not use them to indicate parentage robustly.
 * `sample_alias`: The unique name for the biological sample.
@@ -22,8 +23,8 @@ Key columns in each file:
     * The exception is the F8 low coverage batch, which were sequenced over two lanes. 
 * `library_name`: Samples were processed on 96-well plates, with one library per well.
 * `collection date`: Date on which tissue was collected. In practice this is often date the library was submitted, because I don't have information on collection date.
-* sample_alias	library_name	collection_date	source_fastq_R1	source_fastq_R2	target_fastq_R1	target_fastq_R2
+* `instrument_model` Sequencing device. `Illumina NovaSeq X` in all cases.
 * `source_fastq_R1` and `source_fastq_R2` are paths to fastq files with raw names from the NGS facility.
-* `target_fastq_R1` and `target_fastq_R2` are paths to fastq files after they have been renamed with informative names. The basenames of these files are what will be uploaded to ENA.
+* `forward_file_name` and `reverse_file_name` are paths to fastq files after they have been renamed with informative names. The basenames of these files are what will be uploaded to ENA.
 
 See the [README on renaming files](../04_create_checksums/README.md) for more details.

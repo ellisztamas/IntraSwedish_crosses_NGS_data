@@ -2,8 +2,8 @@
 # =============================================================================
 # md5_check.sh
 #
-# Compute MD5 checksums for all FASTQ files listed in the 'target_fastq_R1' and
-# 'target_fastq_R2' columns of a tab-delimited sample sheet. All checksums are
+# Compute MD5 checksums for all FASTQ files listed in the 'forward_file_name' and
+# 'reverse_file_name' columns of a tab-delimited sample sheet. All checksums are
 # computed in parallel within a single SLURM job using GNU parallel or
 # xargs -P (whichever is available), avoiding job array limits entirely.
 # The output is a TSV with columns 'file_name' and 'file_md5'.
@@ -21,7 +21,7 @@
 #
 # REQUIREMENTS
 #   - Tab-delimited sample sheet with a header row containing the columns
-#     'target_fastq_R1' and 'target_fastq_R2'. Column 'target_fastq_R2' may be empty.
+#     'forward_file_name' and 'reverse_file_name'. Column 'reverse_file_name' may be empty.
 #   - md5sum available on compute nodes (standard on Linux clusters).
 #   - GNU parallel or xargs available on compute nodes.
 # =============================================================================
@@ -79,7 +79,7 @@ if [[ -z "${SLURM_JOB_ID:-}" ]]; then
         || { echo "ERROR: Could not create output directory: $OUT_DIR" >&2; exit 1; }
 
     # -------------------------------------------------------------------------
-    # Build a flat, one-file-per-line list from target_fastq_R1 and target_fastq_R2.
+    # Build a flat, one-file-per-line list from forward_file_name and reverse_file_name.
     # Column indices are detected dynamically from the header row so the script
     # works with any tab-delimited sample sheet that contains these columns.
     # Windows-style carriage returns (\r) are stripped throughout.
@@ -88,15 +88,15 @@ if [[ -z "${SLURM_JOB_ID:-}" ]]; then
         NR == 1 {
             for (i = 1; i <= NF; i++) {
                 gsub(/\r/, "", $i)
-                if ($i == "target_fastq_R1")                  col1 = i
-                if ($i == "target_fastq_R2" || $i == "file_name_2") col2 = i
+                if ($i == "forward_file_name")                  col1 = i
+                if ($i == "reverse_file_name" || $i == "file_name_2") col2 = i
             }
             if (!col1) {
-                print "ERROR: column \"target_fastq_R1\" not found in header" > "/dev/stderr"
+                print "ERROR: column \"forward_file_name\" not found in header" > "/dev/stderr"
                 exit 1
             }
             if (!col2) {
-                print "ERROR: neither \"target_fastq_R2\" nor \"file_name_2\" found in header" > "/dev/stderr"
+                print "ERROR: neither \"reverse_file_name\" nor \"file_name_2\" found in header" > "/dev/stderr"
                 exit 1
             }
             next

@@ -1,35 +1,37 @@
 #' Script to create an input sample sheet for F8 high-coverage sequencing batch.
-#' 
+#'
 #' This script creates a character variable that concatenates the
-#' expected path to each sample's raw R1 data file(s) and the first part of each 
+#' expected path to each sample's raw R1 data file(s) and the first part of each
 #' file name (the NGS request ID and two indices) then greps those partial paths
-#' in a list of actual unzipped filenames. 
+#' in a list of actual unzipped filenames.
 #' It identifies R2 files by string substitution.
 #' It then confirms that these files exist, and that there are no duplicates.
-#' 
+#'
 #' Tom Ellis
 #' 2026-09-02
 
 
 library(tidyverse)
 
-# Import a lab sample sheet giving well positions, legacy line names, and 
+# Import a lab sample sheet giving well positions, legacy line names, and
 # sequencing indices.
 f10_batch1 <- read_csv(
   "../tom/01_data/12_F10_ngs_data/F10_genotyping_sample_sheet.csv"#, col_types = 'ccccccc'
 )
 
-f10_batch1 <- f10_batch1 %>% 
+f10_batch1 <- f10_batch1 %>%
   rename(
     line = sample,
     legacy_line_name = genotype
-  ) %>% 
+  ) %>%
   mutate(
+    study = "PRJEB123735",
+    instrument_model = "Illumina NovaSeq X",
     sample_alias = paste0(line, "_F10batch1"),
     collection_date = "2024-11-04",
     library_name = paste0("33", row, col),
-    target_fastq_R1 = paste("03_rename_fastq_files/F10_batch1/", sample_alias, library_name, "run1_R1.fastq.gz", sep ="_"),
-    target_fastq_R2 = paste("03_rename_fastq_files/F10_batch1/", sample_alias, library_name, "run1_R2.fastq.gz", sep ="_"),
+    forward_file_name = paste0("03_rename_fastq_files/F10_batch1/", sample_alias, "_", library_name, "_", "run1_R1.fastq.gz"),
+    reverse_file_name = paste0("03_rename_fastq_files/F10_batch1/", sample_alias, "_", library_name, "_", "run1_R2.fastq.gz"),
     to_grep = paste0(directory, "_", index1, index2)
   )
 
@@ -72,17 +74,19 @@ all(file.exists(f10_batch1$source_fastq_R2))
 # Arrange the columns and write to disk
 f10_batch1 %>%
   select(
+    study,
     line,
     legacy_line_name,
     sample_alias,
     library_name,
     collection_date,
+    instrument_model,
     source_fastq_R1,
     source_fastq_R2,
-    target_fastq_R1,
-    target_fastq_R2,
-  ) %>% 
-  arrange(sample_alias) %>% 
+    forward_file_name,
+    reverse_file_name,
+  ) %>%
+  arrange(sample_alias) %>%
   write_tsv(
     "02_input_sample_sheets/F10_batch1_input_sheet.tsv"
   )
