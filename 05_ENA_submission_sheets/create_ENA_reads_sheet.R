@@ -132,7 +132,9 @@ if(unique_file_extension == "gz"){
 # Print a warning if any file_name appears more than once.
 # Again, enforcing reverse_file_name means this can be a single vector operation
 # It is difficult to manage this programmatically, so the user should check it manually.
-file_name_vector <- c(sample_sheet$forward_file_name, sample_sheet$reverse_file_name)
+file_name_vector <- na.exclude(
+  c(sample_sheet$forward_file_name, sample_sheet$reverse_file_name)
+)
 file_name_counts <- table(file_name_vector)
 duplicated_file_names <- names(which(file_name_counts > 1))
 if(any(file_name_counts > 1)){
