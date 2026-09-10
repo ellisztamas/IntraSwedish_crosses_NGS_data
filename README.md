@@ -22,14 +22,14 @@ This repo is a pragmatic attempt to square that circle by giving me a DOI I can 
 ### Growth and wet-lab procedures
 
 We sowed seeds onto a 4:1 mixture of soil (K Substrat 2) and perlite (Gramoflor) in 5cm pots.
-After treating with nematodes to control blackfly we stratified seeds at 4°C for one week.
-We moved plants to a climate-controlled growth chamber at the Plant-Science facility of the Gregor Mendel Institute (Dr.-Bohr-Gasse 3, 1030 Vienna, Austria) at 10°C and a 16:8-hour light:dark schedule under LED lighting.
-Once plants had flowered we moved them to a green house at 21°C under sodium lighting.
+After treating with nematodes (Nemaplus) to control blackfly we stratified seeds at 4°C for one week.
+We moved plants to a climate-controlled growth chamber at the Plant-Science facility of the Gregor Mendel Institute (Dr.-Bohr-Gasse 3, 1030 Vienna, Austria) at 10°C and a 16:8-hour light:dark schedule under Rhenac Bio LED R-LMR-5001 lighting LED lighting.
+Once plants had flowered we moved them to a green house at 21°C under Valoya B200 LE15370019 lighting.
 Where plants were to be sequenced, we harvested mature leaf tissue from one plant each of each line and placed it at -70°C.
 Once all siliques had fully formed we ceased irrigation to allow seeds to dry.
 After collection, we stored seeds at 16°C.
 
-We extracted DNA with [kit name] and processed them with [library kit].
+We extracted DNA with the We extracted DNA with Macherey-Nagel NucleoMag Plant kit and processed them into Tn5-based DNA-seq libraries using an in-house Tn5 enzyme.
 Libraries were sequenced by the Next Generation Sequencing Facility at Vienna BioCenter Core Facilities (VBCF), on an S2 flow cell of an Illumina NovaSeq X, using manufacturer’s standard cluster generation and sequencing tools.
 
 ### Sequencing
@@ -89,13 +89,6 @@ The submission is structured into four parts:
 2. Upload raw fastq or bam files. I did this using FTP (see the [ENA documentation](https://ena-docs.readthedocs.io/en/latest/submit/fileprep/upload.html#uploading-files-using-command-line-ftp-client) on how to do this).
 3. [Submit](https://www.ebi.ac.uk/ena/submit/webin/app-checklist/sample/true) a 'Samples' submission sheet.
 4. [Submit](https://www.ebi.ac.uk/ena/submit/webin/read-submission) a 'Reads' submission sheet.
-
-
-
-## Retrieve data from ENA
-
-
-## Dependencies
 
 
 ## Contributions
